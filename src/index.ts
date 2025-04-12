@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { notFoundHandler } from './components/middleware/notFoundHandler';
 import { errorHandler } from './components/middleware/errorHandlert';
-import { connect, pool } from './components/config/db';
+import { pool } from './components/config/db';
 
 const app = express();
 const port = 3000;
@@ -13,7 +13,6 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.get('/', async (req: Request, res: Response) => {
-  await pool.connect()
   const obj = await pool.query("SELECT 1 as def")
   console.log(obj.rows[0].def);
   
@@ -25,14 +24,8 @@ app.get('/', async (req: Request, res: Response) => {
 app.use(errorHandler)
 app.use(notFoundHandler)
 
-try {
-  connect()
-  
-} catch (error) {
-  console.log(error);
-}
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-  });
+});
 
 

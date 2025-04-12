@@ -2,18 +2,17 @@
 import { Pool } from 'pg';
 import { DATABASE_CONNECTION_STRING } from '.';
 
-export const pool = new Pool({
-  connectionString : DATABASE_CONNECTION_STRING,
-  ssl: {
-    rejectUnauthorized: false, // required for Supabase/Neon in many cases
-  },
-});
+const globalForPool = globalThis as unknown as {
+  pgPool: Pool | undefined;
+};
 
+export const pool =
+  globalForPool.pgPool ||
+  new Pool({
+    connectionString: DATABASE_CONNECTION_STRING,
+    ssl: {
+      rejectUnauthorized: false, // required for Supabase/Neon
+    },
+  });
 // Optional test connection
-
-export const connect = async() => {
-    pool.connect()
-  .then(() => console.log('Connected to PostgreSQL 🎉'))
-  .catch((err : any) => console.error('PostgreSQL connection error', err));
-} 
 
