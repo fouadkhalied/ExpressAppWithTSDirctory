@@ -13,6 +13,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.get('/', async (req: Request, res: Response) => {
+  await pool.connect()
   const obj = await pool.query("SELECT 1 as def")
   console.log(obj.rows[0].def);
   
@@ -26,12 +27,12 @@ app.use(notFoundHandler)
 
 try {
   connect()
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-  });
+  
 } catch (error) {
   console.log(error);
 }
-
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
 
 
