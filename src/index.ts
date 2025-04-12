@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import helmet from 'helmet'; // Correct import for helmet
-import morgan from 'morgan'; // Correct import for morgan
+import helmet from 'helmet';
+import morgan from 'morgan';
 import { notFoundHandler } from './components/middleware/notFoundHandler';
 import { errorHandler } from './components/middleware/errorHandlert';
 import { connect } from './components/config/db';
@@ -20,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(errorHandler)
 app.use(notFoundHandler)
+
 try {
   connect()
   app.listen(port, () => {
@@ -28,3 +29,6 @@ try {
 } catch (error) {
   console.log(error);
 }
+
+
+
